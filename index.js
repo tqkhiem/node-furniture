@@ -26,3 +26,4 @@ app.use("/api/products", proRoute);
 app.listen(process.env.PORT ||port, () =>{
   console.log(`Ung dung dang chay voi port ${port}`);
 });
+module.exports = app;
