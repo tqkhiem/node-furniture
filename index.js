@@ -20,10 +20,11 @@ app.use(exp.json());
 
 app.use("/api/categories", cateRoute);
 app.use("/api/products", proRoute);
+app.get("/",(req, res)=>{
+  res.send("ahihi")
+})
 
 
-
-app.listen(process.env.PORT ||port, () =>{
+app.listen(port, () =>{
   console.log(`Ung dung dang chay voi port ${port}`);
 });
-module.exports = app;
