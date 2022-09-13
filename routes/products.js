@@ -7,7 +7,6 @@ router.get("/", async (req, res) => {
   try {
     let products;
     if (sort) {
-      let keys = Object.keys(sort)[0]
       if (Object.values(sort)[0] == "desc") {
         products = await Products.find().sort({ "view": -1 })
       }else if (Object.values(sort)[0] == "esc"){
@@ -15,7 +14,6 @@ router.get("/", async (req, res) => {
       }
     } else {
       products = await Products.find()
-      console.log(products)
     }
     res.status(200).json(products);
 
