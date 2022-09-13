@@ -7,11 +7,15 @@ router.get("/", async (req, res) => {
   try {
     let products;
     if (sort) {
-      if (Object.values(sort)[0] == "desc") {
-        products = await Products.find().sort({ "view": -1 })
-      }else if (Object.values(sort)[0] == "esc"){
-        products = await Products.find().sort({ "view": 1 })
+      let values = Object.values(sort)[0];
+      let keys = Object.keys(sort)[0]; // giá trị của keys là view
+      let order_by;
+      if(values == "desc"){
+        order_by = -1;
+      }else {
+        order_by = 1;
       }
+      products = await Products.find().sort({ view: order_by })
     } else {
       products = await Products.find()
     }
