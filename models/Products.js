@@ -10,6 +10,8 @@ const ProductsSchema = new mongoose.Schema(
     describe: { type: String, required: true },
     hide: { type: Number, required: true },
     view: { type: Number, required: true },
+    date: { type: Number, required: true },
+
 
   },
   { timestamps: true }

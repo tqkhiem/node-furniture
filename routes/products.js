@@ -11,8 +11,15 @@ router.get("/", async (req, res) => {
       let values = Object.values(sort)[0];
       values == "desc" ? order_by = -1 : order_by = 1;
       let keys = Object.keys(sort)[0]; // giá trị của keys là view
-      if (keys == "view") {
-      products = await Products.find().sort({ view: order_by })
+      switch(keys) {
+        case "view":
+        products = await Products.find().sort({ view: order_by })
+        break;
+        case "date":
+        products = await Products.find().sort({ date: order_by })
+        break;
+        default:
+
       }
     } else {
       products = await Products.find()
