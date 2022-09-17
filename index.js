@@ -6,7 +6,6 @@ const dotenv = require("dotenv");
 const app = exp();
 
 
-
 const cateRoute = require("./routes/categories");
 const proRoute = require("./routes/products");
 const orderRoute = require("./routes/order");
@@ -25,6 +24,7 @@ app.use("/api/orders", orderRoute);
 app.get("/",(req, res)=>{
   res.send("ahihi")
 })
+
 
 
 app.listen(port, () =>{
