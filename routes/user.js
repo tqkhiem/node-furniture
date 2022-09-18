@@ -33,19 +33,18 @@ function verifyToken(req, res, next) {
     try {
 
       const user = await User.findOne({ username: req.body.username });
-      !user && res.status(401).json("Wrong credentials!");
-      if ( user.password !== req.body.password ){
-        res.status(401).json("Wrong credentials!");
+      if (user) {
+        // statement
+        if ( user.password !== req.body.password ){
+          res.status(401).json({"message": "Thông tin đăng nhập không đúng.","status_code": 401});
+        }else{
+          const accessToken = jwt.sign(
+          { id: user._id,role: user.role },PRIVATE_KEY,{ expiresIn: "1d" });
+          res.status(200).json({ accessToken,role: user.role });
+        }
+      }else{
+        res.status(401).json({"message": "Thông tin đăng nhập không đúng.","status_code": 401});
       }
-      const accessToken = jwt.sign(
-      {
-        id: user._id,
-        role: user.role
-      },
-      PRIVATE_KEY,
-      { expiresIn: "1d" }
-      );
-      res.status(200).json({ accessToken,role: user.role });
     } catch (err) {
       res.status(500).json(err);
     }
