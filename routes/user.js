@@ -53,8 +53,9 @@ function verifyToken(req, res, next) {
   router.get("/",verifyToken, async (req, res) => {
     try {
       const userId = res.user.id;
-      const orders = await User.find({_id:userId});
-      res.status(200).json(orders);
+      const userInfo = await User.find({_id:userId});
+
+      res.status(200).json(userInfo[0]);
 
     } catch (err) {
       res.status(500).json(err);
