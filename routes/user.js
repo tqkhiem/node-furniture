@@ -26,12 +26,13 @@ router.post("/login", async (req, res) => {
     }
     const accessToken = jwt.sign(
     {
-      id: user._id
+      id: user._id,
+      role: user.role
     },
     PRIVATE_KEY,
     { expiresIn: "1d" }
     );
-    res.status(200).json({ username: req.body.username, accessToken });
+    res.status(200).json({ username: user.username,role: user.role, accessToken });
   } catch (err) {
     res.status(500).json(err);
   }
