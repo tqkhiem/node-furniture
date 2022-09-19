@@ -40,7 +40,7 @@ function verifyToken(req, res, next) {
           res.status(401).json({"message": "Thông tin đăng nhập không đúng.","status_code": 401});
         }else{
           const accessToken = jwt.sign(
-          { id: user._id,role: user.role },PRIVATE_KEY,{ expiresIn: "1d" });
+            { id: user._id,role: user.role },PRIVATE_KEY,{ expiresIn: "2h" });
           res.status(200).json({ accessToken,role: user.role });
         }
       }else{
@@ -53,9 +53,9 @@ function verifyToken(req, res, next) {
   router.get("/",verifyToken, async (req, res) => {
     try {
       const userId = res.user.id;
-      const userInfo = await User.find({_id:userId});
+      const userInfo = await User.findOne({_id:userId});
 
-      res.status(200).json(userInfo[0]);
+      res.status(200).json(userInfo);
 
     } catch (err) {
       res.status(500).json(err);
