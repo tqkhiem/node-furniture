@@ -54,8 +54,9 @@ function verifyToken(req, res, next) {
     try {
       const userId = res.user.id;
       const userInfo = await User.findOne({_id:userId});
+      const { password , ...other} = userInfo._doc
 
-      res.status(200).json(userInfo);
+      res.status(200).json(other);
 
     } catch (err) {
       res.status(500).json(err);
