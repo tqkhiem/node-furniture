@@ -13,10 +13,10 @@ router.get("/", async (req, res) => {
       let keys = Object.keys(sort)[0]; 
       switch(keys) {
         case "view":
-        products = await Products.find().sort({ view: order_by })
+        products = await Products.find().sort({ view: order_by }).limit(8)
         break;
         case "date":
-        products = await Products.find().sort({ date: order_by })
+        products = await Products.find().sort({ date: order_by }).limit(8)
         break;
         default:
 
