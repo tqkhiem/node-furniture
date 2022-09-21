@@ -17,6 +17,30 @@ function verifyToken(req, res, next) {
       return res.status(403).json({"message": "Token không hợp lệ.","status_code": 403})
     }
   }
+  router.put("/:id",verifyToken, async (req, res) => {
+    try {
+      const idRes = res.user.id;
+      const idReq = req.params.id;
+      const newPass = req.body.password
+      console.log(res.user)
+      if (idRes == idReq && newPass != undefined) {
+        const updatedUser = await User.findByIdAndUpdate(
+          idReq,
+          {
+            $set: { password: `${newPass}` },
+          },
+          { new: true }
+          );
+        console.log(updatedUser)
+        res.status(200).json({"message": "Đã đổi mật khẩu thành công.","status_code": 200});
+      }else {
+        res.status(403).json({"message": "Có lỗi xảy ra vui lòng thử lại.","status_code": 403});
+        
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
 
 
   router.post("/", async (req, res) => {
