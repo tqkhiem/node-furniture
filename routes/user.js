@@ -7,31 +7,32 @@ const PRIVATE_KEY = fs.readFileSync('./private-key.txt');
 
 function verifyToken(req, res, next) {
   const authorizationClient = req.headers['authorization'];
+  console.log(authorizationClient)
   const token = authorizationClient && authorizationClient.split(' ')[1]
+  console.log("token:",token)
   if (!token) return res.status(401).json({"message": "Vui lòng nhập Token.","status_code": 401})
     try {
       const userInfo = jwt.verify(token, PRIVATE_KEY)
       res.user = userInfo
       next()
     } catch (e) {
+
       return res.status(403).json({"message": "Token không hợp lệ.","status_code": 403})
     }
   }
-  router.put("/:id",verifyToken, async (req, res) => {
+  router.put("/",verifyToken, async (req, res) => {
     try {
       const idRes = res.user.id;
-      const idReq = req.params.id;
       const newPass = req.body.password
       console.log(res.user)
-      if (idRes == idReq && newPass != undefined) {
+      if (idRes && newPass != undefined) {
         const updatedUser = await User.findByIdAndUpdate(
-          idReq,
+          idRes,
           {
             $set: { password: `${newPass}` },
           },
           { new: true }
           );
-        console.log(updatedUser)
         res.status(200).json({"message": "Đã đổi mật khẩu thành công.","status_code": 200});
       }else {
         res.status(403).json({"message": "Có lỗi xảy ra vui lòng thử lại.","status_code": 403});
@@ -65,7 +66,7 @@ function verifyToken(req, res, next) {
         }else{
           const accessToken = jwt.sign(
             { id: user._id,role: user.role },PRIVATE_KEY,{ expiresIn: "2h" });
-          res.status(200).json({ accessToken,role: user.role });
+          res.status(200).json({ accessToken,role: user.role,username: user.username });
         }
       }else{
         res.status(401).json({"message": "Thông tin đăng nhập không đúng.","status_code": 401});
