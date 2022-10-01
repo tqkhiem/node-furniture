@@ -42,5 +42,22 @@ function verifyToken(req, res, next) {
       res.status(500).json(err);
     }
   });
+  router.post("/",verifyToken, async (req, res) => {
+    const newCate = new Categories(req.body);
+    const userRole = res.user.role;
+    try {
+      if (userRole == "admin") {
+        const savedCate = await newCate.save();
+        res.status(201).json(savedCate);
+      }else {
+        res.status(403).json({"message": "Bạn không phải là admin hoặc id không đúng.","status_code": 403});  
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+
+
+
 
   module.exports = router;
