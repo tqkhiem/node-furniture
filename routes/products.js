@@ -74,6 +74,25 @@ router.put('/', verifyToken, async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.delete('/',verifyToken, async (req, res) => {
+  const userRole = res.user.role;
+  try {
+    if (userRole == "admin") {
+      const product = await Products.findById(req.body._id);
+      if (product) {
+        await product.deleteOne();
+        res.status(200).json({ "message": "Đã xóa thành công.", "status_code": 200 });
+      } else {
+        res.status(404).json({ "message": "Không tìm thấy sản phẩm.", "status_code": 404 });
+      }
+    } else {
+      res.status(403).json({ "message": "Bạn không phải là admin hoặc id không đúng.", "status_code": 403 });
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 
 

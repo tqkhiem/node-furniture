@@ -5,7 +5,7 @@ const fs = require('fs');
 const PRIVATE_KEY = fs.readFileSync('./private-key.txt');
 
 
-function verifyToken(req, res, next) {
+ function verifyToken(req, res, next) {
   const authorizationClient = req.headers['authorization'];
   console.log(authorizationClient)
   const token = authorizationClient && authorizationClient.split(' ')[1]
